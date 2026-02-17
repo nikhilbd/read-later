@@ -3,13 +3,6 @@ import { cookies } from 'next/headers'
 
 export async function createClient() {
     const cookieStore = await cookies()
-    const fs = require('fs');
-    try {
-        const allCookies = cookieStore.getAll().map(c => c.name).join(', ');
-        fs.appendFileSync('debug.log', `[${new Date().toISOString()}] Server Client Cookies: ${allCookies}\n`);
-    } catch (e) {
-        // ignore
-    }
 
     return createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
