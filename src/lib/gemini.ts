@@ -13,10 +13,10 @@ export async function generateSummary(text: string, type: 'article' | 'video' | 
         }
         const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
-        let prompt = `Summarize the following text in 3 concise sentences. Focus on the main takeaways.`
+        let prompt = `Summarize the following text concisely but comprehensively. Focus on the main ideas and key takeaways. Formatter your output as Markdown.`
 
         if (type === 'video') {
-            prompt = `The following text is improved metadata and description from a video page. Summarize what this video is likely about in 3 concise sentences.`
+            prompt = `The following text includes the title, description, and transcript of a YouTube video. Provide a concise but comprehensive summary of the video's content, focusing on the key points and takeaways. Format your output as Markdown.`
         }
 
         const result = await model.generateContent([prompt, text])

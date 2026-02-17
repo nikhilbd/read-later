@@ -1,58 +1,72 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { extractMetadata } from '../metadata'
 
-describe('extractMetadata', () => {
-    beforeEach(() => {
-        vi.resetAllMocks()
-    })
+// Mock the new dependencies
+vi.mock('@mozilla/readability', () => ({
+  Readability: class {
+    parse() {
+      return { textContent: 'Extracted article content '.repeat(20) }
+    }
+  }
+}))
 
-    it('extracts metadata from a simple HTML page', async () => {
-        const mockHtml = `
+vi.mock('youtube-caption-extractor', () => ({
+  getSubtitles: vi.fn().mockResolvedValue([{ text: 'Hello' }, { text: 'world' }])
+}))
+
+describe('extractMetadata', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('extracts metadata and uses Readability for articles', async () => {
+    const mockHtml = `
       <html>
         <head>
-          <title>Test Title</title>
-          <meta name="description" content="Test Description">
-          <meta property="og:image" content="https://example.com/image.jpg">
+          <title>Article Title</title>
         </head>
         <body>
-          <p>This is the content of the page. It has some text that we want to extract.</p>
+          <article>
+            <p>Main article content that should be extracted by readability.</p>
+          </article>
         </body>
       </html>
     `
 
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            text: () => Promise.resolve(mockHtml),
-        })
-
-        const metadata = await extractMetadata('https://example.com')
-
-        expect(metadata.title).toBe('Test Title')
-        expect(metadata.description).toBe('Test Description')
-        expect(metadata.image_url).toBe('https://example.com/image.jpg')
-        expect(metadata.type).toBe('website')
-        expect(metadata.content).toContain('This is the content of the page')
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(mockHtml),
     })
 
-    it('identifies a video type for YouTube URLs', async () => {
-        const mockHtml = `<html><head><title>YouTube Video</title></head><body></body></html>`
+    const metadata = await extractMetadata('https://example.com/article')
 
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            text: () => Promise.resolve(mockHtml),
-        })
+    expect(metadata.title).toBe('Article Title')
+    expect(metadata.type).toBe('article')
+    expect(metadata.content).toBe('Extracted article content '.repeat(20).trim())
+  })
 
-        const metadata = await extractMetadata('https://www.youtube.com/watch?v=123')
-        expect(metadata.type).toBe('video')
+  it('extracts YouTube transcripts for video type', async () => {
+    const mockHtml = `<html><head><title>YouTube Video</title></head><body></body></html>`
+
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(mockHtml),
     })
 
-    it('handles fetch errors gracefully', async () => {
-        global.fetch = vi.fn().mockRejectedValue(new Error('Network error'))
+    const metadata = await extractMetadata('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
-        const url = 'https://broken.link'
-        const metadata = await extractMetadata(url)
+    expect(metadata.type).toBe('video')
+    expect(metadata.content).toContain('Transcript:')
+    expect(metadata.content).toContain('Hello world')
+  })
 
-        expect(metadata.title).toBe(url)
-        expect(metadata.type).toBe('website')
-    })
+  it('handles fetch errors gracefully', async () => {
+    global.fetch = vi.fn().mockRejectedValue(new Error('Network error'))
+
+    const url = 'https://broken.link'
+    const metadata = await extractMetadata(url)
+
+    expect(metadata.title).toBe(url)
+    expect(metadata.type).toBe('website')
+  })
 })
