@@ -2,8 +2,9 @@ import { Sidebar } from '@/components/sidebar'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { BookOpen, Archive, LogOut } from 'lucide-react'
+import { BookOpen, Archive, LogOut, Settings } from 'lucide-react'
 import { SignOutButton } from '@/components/sign-out-button'
+import { headers } from 'next/headers'
 
 export default async function DashboardLayout({
     children,
@@ -14,7 +15,16 @@ export default async function DashboardLayout({
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-        redirect('/login')
+        const headerList = await headers()
+        const fullUrl = headerList.get('x-url') || ''
+        let nextParam = ''
+        try {
+            const url = new URL(fullUrl)
+            nextParam = `?next=${encodeURIComponent(url.pathname + url.search)}`
+        } catch (e) {
+            // Fallback if URL is invalid
+        }
+        redirect(`/login${nextParam}`)
     }
 
     return (
@@ -30,6 +40,9 @@ export default async function DashboardLayout({
                         </Link>
                         <Link href="/archive" className="p-2 text-slate-600 hover:text-slate-900">
                             <Archive className="h-5 w-5" />
+                        </Link>
+                        <Link href="/settings" className="p-2 text-slate-600 hover:text-slate-900">
+                            <Settings className="h-5 w-5" />
                         </Link>
                         <SignOutButton />
                     </nav>

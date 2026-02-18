@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpen, Archive, LogOut, Menu } from 'lucide-react'
+import { BookOpen, Archive, LogOut, Menu, Settings } from 'lucide-react'
 import { cn } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -21,6 +21,7 @@ export function Sidebar({ className }: { className?: string }) {
     const items = [
         { name: 'To Read', href: '/', icon: BookOpen },
         { name: 'Archive', href: '/archive', icon: Archive },
+        { name: 'Settings', href: '/settings', icon: Settings },
     ]
 
     return (

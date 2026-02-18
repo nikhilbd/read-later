@@ -7,6 +7,7 @@ A modern, full-stack "Read Later" web application that helps you organize your b
 ## Features
 
 -   **Seamless Authentication**: Secure login with Google via Supabase Auth.
+-   **One-Click Saving**: Browser bookmarklet for saving links instantly from any website.
 -   **Gemini Native Video Understanding**: Direct YouTube URL processing using Gemini's native multimodal capabilities (`fileUri`).
 -   **Advanced Article Extraction**: Uses `@mozilla/readability` to isolate main content, stripping away noise.
 -   **Markdown Summary Rendering**: AI-generated summaries are beautifully formatted with headers, lists, and bold text.

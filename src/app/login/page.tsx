@@ -1,16 +1,20 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button' // We will create a simple button or use existing if avail
+import { useSearchParams } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 import { Chrome } from 'lucide-react'
 
 export default function LoginPage() {
+    const searchParams = useSearchParams()
+    const next = searchParams.get('next') || '/'
+
     const handleLogin = async () => {
         const supabase = createClient()
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${location.origin}/auth/callback`,
+                redirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
                 queryParams: {
                     access_type: 'offline',
                     prompt: 'consent',
