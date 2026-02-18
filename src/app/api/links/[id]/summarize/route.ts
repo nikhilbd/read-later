@@ -32,7 +32,7 @@ export async function POST(
         const metadata = await extractMetadata(link.url)
 
         // 3. Generate Summary
-        const summary = await generateSummary(metadata.content || metadata.description, link.type as any)
+        const summary = await generateSummary(metadata.content || metadata.description, link.type as any, link.url)
 
         // 4. Update the link with the summary
         const { error: updateError } = await supabase

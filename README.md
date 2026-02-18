@@ -7,22 +7,22 @@ A modern, full-stack "Read Later" web application that helps you organize your b
 ## Features
 
 -   **Seamless Authentication**: Secure login with Google via Supabase Auth.
--   **Smart Link Parsing**: Auto-extracts titles, descriptions, and preview images from any URL.
--   **AI-Powered Summaries**: Utilizes **Gemini 2.5 Flash** to generate concise summaries of saved articles.
--   **Lazy Loading**: Links are saved instantly; summaries are generated in the background to keep the UI responsive.
--   **Vertical List Layout**: Rich card-based design with "Read More" toggles for long summaries.
--   **Reading Time Estimation**: Automatically calculates reading time for articles.
--   **Video Detection**: Automatically identifies and tags YouTube links.
--   **State Management**: Organize your reading list into "To Read" and "Archive".
--   **Safe Deletion**: Confirmation dialog avoids accidental deletions.
+-   **Gemini Native Video Understanding**: Direct YouTube URL processing using Gemini's native multimodal capabilities (`fileUri`).
+-   **Advanced Article Extraction**: Uses `@mozilla/readability` to isolate main content, stripping away noise.
+-   **Markdown Summary Rendering**: AI-generated summaries are beautifully formatted with headers, lists, and bold text.
+-   **Clean, Focus-Oriented UI**: A professional image-free list view with hover-activated archive/delete actions.
+-   **Lazy Loading**: Links are saved instantly; summaries are generated in the background.
+-   **Rich Metadata**: Displays Site Name, Domain, and Reading Time/Video tags for every link.
+-   **State Management**: Easily organize your reading list into "To Read" and "Archive".
+-   **Safe Deletion**: Confirmation guardrails for all destructive actions.
 
 ## Tech Stack
 
 -   **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
 -   **Database & Auth**: [Supabase](https://supabase.com/)
 -   **AI Model**: [Google Gemini 2.5 Flash](https://ai.google.dev/)
--   **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
--   **Components**: [Radix UI](https://www.radix-ui.com/) & [Lucide Icons](https://lucide.dev/)
+-   **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) with Typography plugin
+-   **Markdown**: [react-markdown](https://github.com/remarkjs/react-markdown)
 -   **Testing**: [Vitest](https://vitest.dev/)
 
 ## Getting Started

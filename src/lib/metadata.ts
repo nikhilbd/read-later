@@ -1,7 +1,6 @@
 import * as cheerio from 'cheerio'
 import { Readability } from '@mozilla/readability'
 import { DOMParser } from 'linkedom'
-import { getSubtitles } from 'youtube-caption-extractor'
 
 export interface LinkMetadata {
     title: string
@@ -47,30 +46,9 @@ export async function extractMetadata(url: string): Promise<LinkMetadata> {
         const isYouTube = url.includes('youtube.com/') || url.includes('youtu.be/')
         if (isYouTube) {
             determinedType = 'video'
-            try {
-                const videoIdMatch = url.match(/(?:v=|\/|be\/)([\w-]{11})(?:[&?]|$)/)
-                const videoId = videoIdMatch ? videoIdMatch[1] : null
-
-                if (videoId) {
-                    const subtitles = await getSubtitles({ videoID: videoId, lang: 'en' })
-                    const transcript = subtitles.map((s: any) => s.text).join(' ')
-
-                    // Also try to get channel name from metadata if possible
-                    const channelName = $('link[itemprop="name"]').attr('content') || site_name || 'YouTube'
-
-                    content = `Type: YouTube Video
-Channel: ${channelName}
-Title: ${title}
-Description: ${description}
-
-Transcript:
-${transcript.slice(0, 15000)}` // Gemini handles 15k chars easily
-                }
-            } catch (err) {
-                console.warn('Could not fetch YouTube transcript:', err)
-                content = `Type: YouTube Video\nTitle: ${title}\nDescription: ${description}`
-            }
-        } else {
+            content = `YouTube Video: ${title}\n\n${description}`
+        }
+        else {
             // 3. Handle Articles / General Web with Readability
             try {
                 const doc = new DOMParser().parseFromString(html, 'text/html')
