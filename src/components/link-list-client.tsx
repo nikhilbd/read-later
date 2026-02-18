@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { LinkCard } from '@/components/link-card'
 import { useRouter } from 'next/navigation'
+import { Link, LinkStatus } from '@/types'
 
 interface LinkListClientProps {
-    initialLinks: any[]
+    initialLinks: Link[]
 }
 
 export function LinkListClient({ initialLinks }: LinkListClientProps) {

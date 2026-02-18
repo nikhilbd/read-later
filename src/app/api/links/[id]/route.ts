@@ -1,5 +1,7 @@
-import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { handleApiError, successResponse, ApiError } from '@/lib/api-utils'
+
+import { updateLinkSchema } from '@/types/schemas'
 
 export async function PATCH(
     request: Request,
@@ -11,15 +13,11 @@ export async function PATCH(
         const { data: { user } } = await supabase.auth.getUser()
 
         if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+            throw new ApiError('Unauthorized', 401)
         }
 
-        const { status } = await request.json()
-
-        // Validate status
-        if (!['unread', 'archived'].includes(status)) {
-            return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
-        }
+        const body = await request.json()
+        const { status } = updateLinkSchema.parse(body)
 
         const { error } = await supabase
             .from('links')
@@ -28,14 +26,12 @@ export async function PATCH(
             .eq('user_id', user.id)
 
         if (error) {
-            console.error('Supabase error:', error)
-            return NextResponse.json({ error: 'Failed to update link' }, { status: 500 })
+            throw error
         }
 
-        return NextResponse.json({ success: true })
+        return successResponse({ success: true })
     } catch (error) {
-        console.error('Error updating link:', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        return handleApiError(error)
     }
 }
 
@@ -49,7 +45,7 @@ export async function DELETE(
         const { data: { user } } = await supabase.auth.getUser()
 
         if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+            throw new ApiError('Unauthorized', 401)
         }
 
         const { error } = await supabase
@@ -59,13 +55,11 @@ export async function DELETE(
             .eq('user_id', user.id)
 
         if (error) {
-            console.error('Supabase error:', error)
-            return NextResponse.json({ error: 'Failed to delete link' }, { status: 500 })
+            throw error
         }
 
-        return NextResponse.json({ success: true })
+        return successResponse({ success: true })
     } catch (error) {
-        console.error('Error deleting link:', error)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        return handleApiError(error)
     }
 }

@@ -1,10 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { env } from '@/lib/env'
 
-if (!process.env.GOOGLE_AI_API_KEY) {
-    throw new Error('Missing GOOGLE_AI_API_KEY environment variable')
-}
-
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY)
+const genAI = new GoogleGenerativeAI(env.GOOGLE_AI_API_KEY)
 
 export async function generateSummary(text: string, type: 'article' | 'video' | 'website', videoUrl?: string): Promise<string> {
     try {

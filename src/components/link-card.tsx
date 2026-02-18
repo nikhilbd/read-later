@@ -5,9 +5,11 @@ import ReactMarkdown from 'react-markdown'
 import { ExternalLink, Trash2, Archive, Clock, Video, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
 import { Button } from './ui/button'
 
+import { Link, LinkStatus } from '@/types'
+
 interface LinkCardProps {
-    link: any
-    onStatusChange: (id: string, status: 'unread' | 'archived') => Promise<void>
+    link: Link
+    onStatusChange: (id: string, status: LinkStatus) => Promise<void>
     onDelete: (id: string) => Promise<void>
 }
 
