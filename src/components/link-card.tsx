@@ -119,7 +119,7 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
                     )}
                 </div>
 
-                <div className="mt-4 flex items-center justify-end gap-1 border-t border-slate-50 pt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-4 flex items-center justify-end gap-1 border-t border-slate-50 pt-3">
                     {link.status === 'unread' ? (
                         <Button
                             variant="ghost"
