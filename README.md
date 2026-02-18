@@ -15,6 +15,7 @@ A modern, full-stack "Read Later" web application that helps you organize your b
 -   **Lazy Loading**: Links are saved instantly; summaries are generated in the background.
 -   **Rich Metadata**: Displays Site Name, Domain, and Reading Time/Video tags for every link.
 -   **State Management**: Easily organize your reading list into "To Read" and "Archive".
+-   **Full Dark Mode Support**: Toggle between Light, Dark, and System themes with a beautiful, high-contrast UI.
 -   **Safe Deletion**: Confirmation guardrails for all destructive actions.
 
 ## Tech Stack

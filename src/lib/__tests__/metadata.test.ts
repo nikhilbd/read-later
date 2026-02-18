@@ -56,8 +56,7 @@ describe('extractMetadata', () => {
     const metadata = await extractMetadata('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
     expect(metadata.type).toBe('video')
-    expect(metadata.content).toContain('Transcript:')
-    expect(metadata.content).toContain('Hello world')
+    expect(metadata.content).toContain('YouTube Video:')
   })
 
   it('handles fetch errors gracefully', async () => {

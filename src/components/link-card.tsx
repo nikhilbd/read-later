@@ -57,50 +57,50 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
     }
 
     return (
-        <div className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md hover:border-blue-200">
+        <div className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md hover:border-blue-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800">
             {/* Content Area */}
             <div className="flex flex-1 flex-col p-5">
                 <div className="flex flex-col mb-3">
                     <div className="flex items-start justify-between gap-4">
-                        <h3 className="text-xl font-bold leading-tight text-slate-900 group-hover:text-blue-600 transition-colors">
+                        <h3 className="text-xl font-bold leading-tight text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             <a href={link.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
                                 {link.title || link.url}
                             </a>
                         </h3>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs font-medium text-slate-500 mt-1">
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">
                         <span className="uppercase tracking-wider">{link.site_name || domain}</span>
-                        <span className="text-slate-300">•</span>
-                        <span className="text-slate-400 font-normal lowercase italic">{domain}</span>
+                        <span className="text-slate-300 dark:text-slate-700">•</span>
+                        <span className="text-slate-400 dark:text-slate-500 font-normal lowercase italic">{domain}</span>
                         {link.type === 'video' && (
                             <>
-                                <span className="text-slate-300">•</span>
-                                <span className="inline-flex items-center gap-1 rounded bg-red-50 px-1.5 py-0.5 text-[10px] font-bold text-red-600">
+                                <span className="text-slate-300 dark:text-slate-700">•</span>
+                                <span className="inline-flex items-center gap-1 rounded bg-red-50 dark:bg-red-950/30 px-1.5 py-0.5 text-[10px] font-bold text-red-600 dark:text-red-400">
                                     <Video className="h-3 w-3" />
                                     VIDEO
                                 </span>
                             </>
                         )}
-                        <span className="ml-auto flex items-center gap-1.5 text-slate-400">
+                        <span className="ml-auto flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
                             <Clock className="h-3 w-3" />
                             {link.reading_time} min
                         </span>
                     </div>
                 </div>
 
-                <div className="flex-1 text-sm text-slate-600 relative">
+                <div className="flex-1 text-sm text-slate-600 dark:text-slate-400 relative">
                     {summaryLoading ? (
-                        <div className="flex items-center gap-2 text-slate-400 italic py-1">
+                        <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 italic py-1">
                             <Loader2 className="h-3 w-3 animate-spin" />
                             Generating summary...
                         </div>
                     ) : (
-                        <div className={`prose prose-slate prose-sm max-w-none ${!expanded ? 'line-clamp-2' : ''}`}>
+                        <div className={`prose prose-slate dark:prose-invert prose-sm max-w-none ${!expanded ? 'line-clamp-2' : ''}`}>
                             {summary || link.description ? (
                                 <ReactMarkdown>{summary || link.description}</ReactMarkdown>
                             ) : (
-                                <span className="italic text-slate-400">No summary available.</span>
+                                <span className="italic text-slate-400 dark:text-slate-600">No summary available.</span>
                             )}
                         </div>
                     )}
@@ -119,14 +119,14 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
                     )}
                 </div>
 
-                <div className="mt-4 flex items-center justify-end gap-1 border-t border-slate-50 pt-3">
+                <div className="mt-4 flex items-center justify-end gap-1 border-t border-slate-50 dark:border-slate-800/50 pt-3">
                     {link.status === 'unread' ? (
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleAction(() => onStatusChange(link.id, 'archived'))}
                             disabled={loading || confirmDelete}
-                            className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600 hover:bg-blue-50"
+                            className="h-8 w-8 p-0 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 dark:hover:text-blue-400 dark:hover:bg-blue-950/30"
                             title="Archive"
                         >
                             <Archive className="h-4 w-4" />
@@ -137,7 +137,7 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
                             size="sm"
                             onClick={() => handleAction(() => onStatusChange(link.id, 'unread'))}
                             disabled={loading || confirmDelete}
-                            className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600 hover:bg-blue-50"
+                            className="h-8 w-8 p-0 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 dark:hover:text-blue-400 dark:hover:bg-blue-950/30"
                             title="Restore"
                         >
                             <Archive className="h-4 w-4 rotate-180" />
@@ -160,7 +160,7 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
                                 size="sm"
                                 onClick={() => setConfirmDelete(false)}
                                 disabled={loading}
-                                className="h-7 px-2 text-[10px] font-bold"
+                                className="h-7 px-2 text-[10px] font-bold text-muted-foreground dark:hover:bg-slate-800"
                             >
                                 NO
                             </Button>
@@ -171,7 +171,7 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
                             size="sm"
                             onClick={() => setConfirmDelete(true)}
                             disabled={loading}
-                            className="h-8 w-8 p-0 text-slate-300 hover:text-red-500 hover:bg-red-50"
+                            className="h-8 w-8 p-0 text-muted-foreground/60 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-950/30"
                             title="Delete"
                         >
                             <Trash2 className="h-4 w-4" />

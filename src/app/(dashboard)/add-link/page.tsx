@@ -50,30 +50,30 @@ function AddLinkContent() {
     }, [searchParams])
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-white p-6 text-center">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-slate-950 p-6 text-center transition-colors">
             {status === 'loading' && (
                 <>
-                    <Loader2 className="h-10 w-10 animate-spin text-blue-600 mb-4" />
-                    <h1 className="text-xl font-semibold text-slate-900">Saving to Read Later...</h1>
+                    <Loader2 className="h-10 w-10 animate-spin text-blue-600 dark:text-blue-400 mb-4" />
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Saving to Read Later...</h1>
                 </>
             )}
 
             {status === 'success' && (
                 <>
-                    <CheckCircle2 className="h-12 w-12 text-green-500 mb-4" />
-                    <h1 className="text-xl font-semibold text-slate-900">Link Added!</h1>
-                    <p className="mt-2 text-sm text-slate-500">This window will close automatically.</p>
+                    <CheckCircle2 className="h-12 w-12 text-green-500 dark:text-green-400 mb-4" />
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Link Added!</h1>
+                    <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">This window will close automatically.</p>
                 </>
             )}
 
             {status === 'error' && (
                 <>
-                    <XCircle className="h-12 w-12 text-red-500 mb-4" />
-                    <h1 className="text-xl font-semibold text-slate-900">Oops!</h1>
-                    <p className="mt-2 text-sm text-red-600 font-medium">{errorMessage}</p>
+                    <XCircle className="h-12 w-12 text-red-500 dark:text-red-400 mb-4" />
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Oops!</h1>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 font-medium">{errorMessage}</p>
                     <button
                         onClick={() => window.close()}
-                        className="mt-6 rounded-md bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200"
+                        className="mt-6 rounded-md bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                     >
                         Close Window
                     </button>

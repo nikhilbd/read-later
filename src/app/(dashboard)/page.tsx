@@ -5,22 +5,21 @@ import { Sidebar } from '@/components/sidebar' // Import Sidebar for mobile draw
 
 export default function DashboardPage() {
     return (
-        <main className="flex-1 overflow-y-auto bg-slate-50/30 p-4 md:p-8">
-            <div className="mx-auto max-w-7xl space-y-8">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-slate-900">To Read</h1>
-                        <p className="text-sm text-slate-500">Your curated reading list</p>
-                    </div>
-                    <div className="w-full sm:w-auto sm:min-w-[400px]">
-                        <AddLinkForm />
-                    </div>
-                </div>
+        <main className="flex-1 overflow-auto p-4 md:p-8 bg-slate-50/50 dark:bg-slate-950/50 transition-colors">
+            <div className="mx-auto max-w-4xl">
+                <header className="mb-10">
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">To Read</h1>
+                    <p className="text-slate-500 dark:text-slate-400">Save articles and videos to summarize and read later.</p>
+                </header>
 
-                <Suspense fallback={<div className="text-sm text-slate-500">Loading your list...</div>}>
-                    <LinkList status="unread" />
-                </Suspense>
+                <div className="mb-10">
+                    <AddLinkForm />
+                </div>
             </div>
+
+            <Suspense fallback={<div className="text-sm text-slate-500">Loading your list...</div>}>
+                <LinkList status="unread" />
+            </Suspense>
         </main>
     )
 }
