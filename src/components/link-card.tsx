@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { ExternalLink, Trash2, Archive, Clock, Video, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
+import { ExternalLink, Trash2, Archive, Clock, Video, Loader2, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react'
 import { Button } from './ui/button'
 
 import { Link, LinkStatus } from '@/types'
@@ -20,27 +20,29 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
     const [expanded, setExpanded] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
 
-    useEffect(() => {
-        const currentId = link?.id;
-        if (summary || summaryLoading) return;
-        if (!currentId || currentId === 'undefined' || currentId === 'null') return;
-
-        setSummaryLoading(true)
-        fetch(`/api/links/${currentId}/summarize`, { method: 'POST' })
-            .then(res => res.json())
-            .then(data => {
-                if (data.summary) setSummary(data.summary)
-                else setSummary('Could not generate summary.')
-            })
-            .catch(() => setSummary('Failed to load summary.'))
-            .finally(() => setSummaryLoading(false))
-    }, [link.id, summary, summaryLoading])
-
     const handleAction = async (action: () => Promise<void>) => {
         setLoading(true)
         await action()
         setLoading(false)
     }
+
+    const handleRegenerateSummary = async () => {
+        setSummaryLoading(true)
+        fetch(`/api/links/${link.id}/summarize`, { method: 'POST' })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.summary) setSummary(data.summary)
+                else setSummary('Could not generate summary.')
+            })
+            .catch(() => setSummary('Failed to load summary.'))
+            .finally(() => setSummaryLoading(false))
+    }
+
+    useEffect(() => {
+        if (!link.summary) {
+            handleRegenerateSummary()
+        }
+    }, [link.id])
 
     const handleDeleteClick = () => {
         if (confirmDelete) {
@@ -122,6 +124,16 @@ export function LinkCard({ link, onStatusChange, onDelete }: LinkCardProps) {
                 </div>
 
                 <div className="mt-4 flex items-center justify-end gap-1 border-t border-slate-50 dark:border-slate-800/50 pt-3">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleRegenerateSummary}
+                        disabled={loading || summaryLoading}
+                        className="h-8 w-8 p-0 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 dark:hover:text-blue-400 dark:hover:bg-blue-950/30"
+                        title="Regenerate summary"
+                    >
+                        <RefreshCw className="h-4 w-4" />
+                    </Button>
                     {link.status === 'unread' ? (
                         <Button
                             variant="ghost"
